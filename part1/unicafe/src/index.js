@@ -13,19 +13,44 @@ const Button = (props) => (
   </button>
 )
 
+const Statistic = (props) => {
+  return (
+    <tr>
+      <th>
+        {props.text}
+      </th>
+      <td>
+        {props.value}
+      </td>
+    </tr>
+  )
+}
+
 const Statistics = (props => {
   const all = props.good + props.neutral + props.bad;
   const average = (props.good - props.bad) / all;
 
-  return (
-  <div>
-    <p>good: {props.good}</p>
-    <p>neutral: {props.neutral}</p>
-    <p>bad: {props.bad}</p>
-    <p>all: {all}</p>
-    <p>average: {average}</p>
-  </div>
-  )
+  if (all === 0) {
+    return (
+      <div>
+        <p>no feedback given</p>
+      </div>
+    )
+  } else {
+      return (
+        <div>
+          <table>
+            <tbody>
+              <Statistic text='good' value={props.good} />
+              <Statistic text='neutral' value={props.neutral} />
+              <Statistic text='bad' value={props.bad} />
+              <Statistic text='all' value={all} />
+              <Statistic text='average' value={average} />
+            </tbody>
+          </table>
+        </div>
+      )
+  }
 })
 
 const App = () => {
