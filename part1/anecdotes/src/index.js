@@ -1,10 +1,29 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const Header = (props) => <h1>{props.text}</h1>
+
 const Button = (props) => {
   return (
     <button onClick={props.handleClick}>{props.text}</button>
   )
+}
+
+const HighestRated = (props) => {
+  let i = props.votes.indexOf(Math.max(...props.votes));
+  let voteSum = props.votes.reduce((acc, cur) => acc + cur)
+  if (voteSum === 0) {
+    return (
+      <p>There have been no votes</p>
+    )
+  } else {
+      return (
+        <div>
+          <p>{anecdotes[i]}</p>
+          <p>has {props.votes[i]} votes</p>
+        </div>
+      )
+  }
 }
 
 const App = (props) => {
@@ -14,7 +33,6 @@ const App = (props) => {
   let newVote = (selected) => {
     const copy = [...votes]
     copy[selected] += 1
-    console.log(copy)
     setVotes(copy)
   }
 
@@ -25,12 +43,15 @@ const App = (props) => {
 
   return (
     <div>
+      <Header text='Anecdote of the day' />
       {props.anecdotes[selected]}
       <br></br>
       has {votes[selected]} votes
       <br></br>
       <Button handleClick={() => newVote(selected)} text='vote' />
       <Button handleClick={newAnectdote} text='new anecdote' />
+      <Header text='Anecdote with most votes' />
+      <HighestRated votes={votes} />       
     </div>
   )
 }
