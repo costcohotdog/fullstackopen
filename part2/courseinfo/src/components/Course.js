@@ -10,7 +10,7 @@ const Course = (props) => {
   )
 };
 
-const Header = (props) => <h1>{props.text}</h1>
+const Header = (props) => <h2>{props.text}</h2>
 
 const Content = ({ parts }) => {
   return (
