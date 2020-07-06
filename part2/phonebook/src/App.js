@@ -1,17 +1,24 @@
-import React, { useState } from 'react'
-
-const Name = (props) => {
-  return (<div>{props.person.name} {props.person.number}</div>)
-}
+import React, { useState, useEffect } from 'react'
+import Filter from './components/Filter'
+import Names from './components/Names'
+import Personform from './components/Personform'
+import axios from 'axios'
 
 const App = () => {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas',
-      number: '888-888-8888'
-    }
-  ]) 
+
+  const [persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
+  const [ newFilter, setNewFilter ] = useState('')
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log(response)
+        setPersons(response.data)
+      })
+  }, [])
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -21,7 +28,11 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  const addName = (event) => {
+  const handleFilterChange = (event) => {
+    setNewFilter(event.target.value)
+  }
+
+  const addPerson = (event) => {
     event.preventDefault()
     const nameObject = {
       name: newName,
@@ -40,29 +51,18 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: 
-          <input 
-            value={newName} 
-            onChange={handleNameChange}
-          />
-        </div>
-        <div>
-          number: 
-          <input 
-            value={newNumber} 
-            onChange={handleNumberChange}
-          />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <h1>Phonebook</h1>
+        <Filter filter={newFilter} filterChange={handleFilterChange} />
+      <h2>Add new name and number</h2>
+        <Personform 
+          addPerson={addPerson} 
+          newName={newName} 
+          handleNameChange={handleNameChange}
+          newNumber={newNumber}
+          handleNumberChange={handleNumberChange}
+        />
       <h2>Numbers</h2>
-        {persons.map(person => 
-          <Name key={person.name} person={person} />)}
+        <Names persons={persons} newFilter={newFilter}/>
     </div>
   )
 }
