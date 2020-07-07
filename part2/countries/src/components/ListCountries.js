@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Countries = (props) => {
+const ListCountries = (props) => {
     const filteredCountries = props.countries.filter(country => 
       country.name.toLowerCase().includes(props.countryFilter.toLowerCase())
     )
@@ -17,13 +17,10 @@ const Countries = (props) => {
     } else {
         return (
           filteredCountries.map(country =>
-            <Country country={country} key={country.name} />
-          )
+            <Country country={country} key={country.name} buttonClick={props.buttonClick}/>)
         )
     }
   }
-
-const Country = (props) => <div>{props.country.name}</div>
 
 const SingleCountry = (props) => {
   return (
@@ -43,4 +40,13 @@ const SingleCountry = (props) => {
 
 const Languages = (props) => <li>{props.language.name}</li>
 
-  export default Countries
+const Country = (props) => {
+  console.log(props)
+  return (
+    <div>
+      {props.country.name}  <button onClick={props.buttonClick} country={props.country.name}>Show</button>
+    </div>
+  )  
+}
+
+export default ListCountries

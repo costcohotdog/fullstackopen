@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Countries from './components/Countries'
-
+import ListCountries from './components/ListCountries'
 
 function App() {
 
@@ -20,17 +19,23 @@ function App() {
     setNewFilter(event.target.value)
   }
 
+  const buttonClick =(event) => {
+    setNewFilter(event.target.attributes.country.value)
+  }
+
   return (
     <div>
       Find Countries:
       &nbsp;
       <input 
-        value={newFilter} 
+        value={newFilter}
         onChange={handleFilterChange}
       />
-      <Countries countries={countries} countryFilter={newFilter} />
+      <ListCountries countries={countries} countryFilter={newFilter} buttonClick={buttonClick}/>
     </div>
   );
 }
 
 export default App;
+
+// test
