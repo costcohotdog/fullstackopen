@@ -5,7 +5,7 @@ import ListCountries from './components/ListCountries'
 function App() {
 
   const [ newFilter, setNewFilter ] = useState('')
-  const [ countries, setCountries ] = useState([]) 
+  const [ countries, setCountries ] = useState([])
 
   useEffect(() => {
     axios
@@ -31,7 +31,7 @@ function App() {
         value={newFilter}
         onChange={handleFilterChange}
       />
-      <ListCountries countries={countries} countryFilter={newFilter} buttonClick={buttonClick}/>
+      <ListCountries countries={countries} countryFilter={newFilter} buttonClick={buttonClick} />
     </div>
   );
 }

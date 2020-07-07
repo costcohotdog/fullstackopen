@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios';
 
 const ListCountries = (props) => {
     const filteredCountries = props.countries.filter(country => 
@@ -10,7 +11,6 @@ const ListCountries = (props) => {
         <div>More than 10 results, please refine your search</div>
       )
     } else if(filteredCountries.length === 1) {
-        console.log(filteredCountries)
         return (
           <SingleCountry country={filteredCountries[0]} />
         )
@@ -23,6 +23,25 @@ const ListCountries = (props) => {
   }
 
 const SingleCountry = (props) => {
+  
+  const [ weather, setWeather ] = useState([])
+  const [ weatherIcon, setWeatherIcon ] = useState('')
+
+  const params = {
+    access_key: process.env.REACT_APP_API_KEY,
+    query: props.country.name
+  }
+
+  useEffect(() => {
+    axios
+      .get('http://api.weatherstack.com/current', {params})
+      .then(response => {
+        setWeather(response.data.current)
+        setWeatherIcon(response.data.current.weather_icons[0])
+        console.log(response.data.current)
+      })
+  }, [])
+
   return (
     <div>
       <h1>{props.country.name}</h1>
@@ -34,6 +53,10 @@ const SingleCountry = (props) => {
           <Languages key={language.name} language={language} />)}
       </ul>
       <img src={props.country.flag} alt='Country Flag' width="400"></img>
+      <h2>Weather in {props.country.capital}</h2>
+      <p><strong>Temperature:</strong> {weather.temperature} Celsius</p>
+      <img src={weatherIcon} alt='Weather Icon' width="100"></img>
+      <p><strong>Wind:</strong> {weather.wind_speed} mph {weather.wind_dir}</p>
     </div>
   )
 }
@@ -41,7 +64,6 @@ const SingleCountry = (props) => {
 const Languages = (props) => <li>{props.language.name}</li>
 
 const Country = (props) => {
-  console.log(props)
   return (
     <div>
       {props.country.name}  <button onClick={props.buttonClick} country={props.country.name}>Show</button>
