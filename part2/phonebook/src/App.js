@@ -40,9 +40,19 @@ const App = () => {
     }
 
     if (persons.some(person => person.name === newName)) {
-      alert(`${newName} already added to phonebook`)
-      setNewName('')
-      setNewNumber('')
+      if (window.confirm(`${newName} already in phonebook, update current entry?`)) {
+        const id = persons.findIndex( person => person.name === newName) + 1;
+        personService
+          .updatePerson(id, personObject)
+          .then ( () => {
+            personService
+              .getAll()
+              .then(response => 
+                setPersons(response.data))
+          })
+        setNewName('')
+        setNewNumber('')
+      }
     } else {
       personService
         .create(personObject)
@@ -61,10 +71,11 @@ const App = () => {
     if (window.confirm(`Delete ${name}?`)) {
       personService
       .deletePerson(id)
-      .then(response => {
+      .then( () => {
         personService
           .getAll()
-          .then(response => setPersons(response.data))
+          .then(response => 
+            setPersons(response.data))
       })
     }
   }
