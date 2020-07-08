@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import Names from './components/Names'
 import Personform from './components/Personform'
-import axios from 'axios'
+import personService from './services/persons'
 
 const App = () => {
 
@@ -12,10 +12,9 @@ const App = () => {
   const [ newFilter, setNewFilter ] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
+    personService
+      .getAll()
       .then(response => {
-        console.log(response)
         setPersons(response.data)
       })
   }, [])
@@ -34,19 +33,36 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    const nameObject = {
+    
+    const personObject = {
       name: newName,
       number: newNumber
     }
+
     if (persons.some(person => person.name === newName)) {
       alert(`${newName} already added to phonebook`)
       setNewName('')
       setNewNumber('')
     } else {
-      setPersons(persons.concat(nameObject))
-      setNewName('')
-      setNewNumber('')
+      personService
+        .create(personObject)
+        .then(response => {
+          setPersons(persons.concat(response.data))
+          setNewName('')
+          setNewNumber('')
+        })
     }
+  }
+  
+  const deletePerson = (event) => {
+    const id = event.target.attributes.id.value.toString();
+    personService
+      .deletePerson(id)
+      .then(response => {
+        personService
+          .getAll()
+          .then(response => setPersons(response.data))
+      })
   }
 
   return (
@@ -62,7 +78,7 @@ const App = () => {
           handleNumberChange={handleNumberChange}
         />
       <h2>Numbers</h2>
-        <Names persons={persons} newFilter={newFilter}/>
+        <Names persons={persons} newFilter={newFilter} deletePerson={deletePerson} />
     </div>
   )
 }
