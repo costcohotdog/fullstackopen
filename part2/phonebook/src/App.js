@@ -32,7 +32,12 @@ const App = () => {
   }
 
   const addPerson = (event) => {
-    event.preventDefault()
+    
+    event.preventDefault();
+
+    if (newName.length < 1 || newNumber < 1) {
+      return;
+    }
     
     const personObject = {
       name: newName,
