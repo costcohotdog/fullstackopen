@@ -55,14 +55,18 @@ const App = () => {
   }
   
   const deletePerson = (event) => {
+    const name = event.target.attributes.name.value;
+    console.log(name)
     const id = event.target.attributes.id.value.toString();
-    personService
+    if (window.confirm(`Delete ${name}?`)) {
+      personService
       .deletePerson(id)
       .then(response => {
         personService
           .getAll()
           .then(response => setPersons(response.data))
       })
+    }
   }
 
   return (

@@ -12,7 +12,7 @@ const Name = (props) => {
   if ( name.includes(props.filter.toLowerCase()) ) {
       return ( 
         <div>
-          {props.person.name} {props.person.number} <button onClick={props.deletePerson} id={props.person.id}>Delete</button>
+          {props.person.name} {props.person.number} <button onClick={props.deletePerson} id={props.person.id} name={props.person.name}>Delete</button>
         </div> 
       )
   } else {
