@@ -1,18 +1,18 @@
 {
   "persons": [
     {
-      "name": "John",
-      "number": "testing6",
+      "name": "John Loper",
+      "number": "831-234-3454",
       "id": 1
     },
     {
-      "name": "Alison",
-      "number": "testing5",
+      "name": "Alison Deshong",
+      "number": "949-234-5738",
       "id": 2
     },
     {
       "name": "Shoalie",
-      "number": "testing3",
+      "number": "woof-woof",
       "id": 3
     }
   ]
