@@ -6,12 +6,12 @@ import personService from './services/persons'
 import Notification from './components/Notification'
 
 const App = () => {
-  const [persons, setPersons] = useState([]) 
+  const [ persons, setPersons ] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setNewFilter ] = useState('')
-  const [notificationMessage, setNotificationMessage] = useState('')
-  const [messageType, setMessageType] = useState('')
+  const [ notificationMessage, setNotificationMessage ] = useState('')
+  const [ messageType, setMessageType ] = useState('')
 
   useEffect(() => {
     personService
@@ -49,6 +49,8 @@ const App = () => {
 
     //check whether person is already in phonebook
     if (persons.some(person => person.name === newName)) {
+
+      // if name already in phonebook, user may update entry
       if (window.confirm(`${newName} already in phonebook, update current entry?`)) {
         const id = persons.findIndex( person => person.name === newName) + 1;
         personService
@@ -88,7 +90,7 @@ const App = () => {
       personService
         .create(personObject)
         .then(response => {
-          setPersons(persons.concat(response.data))
+          setPersons(response.data)
           setMessageType('good')
           setNotificationMessage(`${newName} added successfully!`)
           setTimeout(() => {
