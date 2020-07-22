@@ -13,6 +13,7 @@ const App = () => {
   const [ notificationMessage, setNotificationMessage ] = useState('')
   const [ messageType, setMessageType ] = useState('')
 
+  // get all people in phonebook
   useEffect(() => {
     personService
       .getAll()
@@ -85,12 +86,16 @@ const App = () => {
                 setNewNumber('')
               })
           })
-      }
-    } else {
+      } 
+    } else { // if name not in phonebook, create new entry, then fetch all persons 
       personService
         .create(personObject)
         .then(response => {
-          setPersons(response.data)
+          personService
+            .getAll()
+            .then(response => {
+              setPersons(response.data)
+            })
           setMessageType('good')
           setNotificationMessage(`${newName} added successfully!`)
           setTimeout(() => {
