@@ -53,7 +53,10 @@ const App = () => {
 
       // if name already in phonebook, user may update entry
       if (window.confirm(`${newName} already in phonebook, update current entry?`)) {
-        const id = persons.findIndex( person => person.name === newName) + 1;
+
+        //get person id
+        const matchingPerson = persons.find(person => person.name === newName)
+        const id = matchingPerson.id
         personService
           .updatePerson(id, personObject)
           .then ( () => {
