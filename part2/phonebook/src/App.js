@@ -34,6 +34,16 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
+  // function for resetting the notification message and form boxes
+  const messageReset = () => {
+    setTimeout(() => {
+      setNotificationMessage(null)
+      setMessageType('none')
+    }, 3000)
+    setNewName('')
+    setNewNumber('')
+  }
+
   const addPerson = (event) => {
     // prevent page reload
     event.preventDefault();
@@ -66,12 +76,7 @@ const App = () => {
                 setPersons(response.data)
                 setMessageType('good')
                 setNotificationMessage(`${newName} updated successfully!`)
-                setTimeout(() => {
-                  setNotificationMessage(null)
-                  setMessageType('none')
-                  }, 3000)
-                setNewName('')
-                setNewNumber('')
+                messageReset()
               })
           })
           .catch(error => {
@@ -81,12 +86,7 @@ const App = () => {
                 setPersons(response.data)
                 setMessageType('bad')
                 setNotificationMessage(`${newName} was already deleted from the database`)
-                setTimeout(() => {
-                  setNotificationMessage(null)
-                  setMessageType('none')
-                  }, 3000)
-                setNewName('')
-                setNewNumber('')
+                messageReset()
               })
           })
       } 
@@ -101,12 +101,16 @@ const App = () => {
             })
           setMessageType('good')
           setNotificationMessage(`${newName} added successfully!`)
-          setTimeout(() => {
-            setNotificationMessage(null)
-            setMessageType('none')
-            }, 3000)
-          setNewName('')
-          setNewNumber('')
+          messageReset()
+        })
+        .catch(error => {
+          setMessageType('bad')
+          if (error.response.data.error.includes('name')) {
+            setNotificationMessage('Name requires a minimum length of 3')
+          } else {
+            setNotificationMessage('Number requires a minimum length of 8')
+          }
+          messageReset()
         })
     }
   }
@@ -124,10 +128,7 @@ const App = () => {
             setPersons(response.data))
             setMessageType('bad')
             setNotificationMessage(`${name} removed successfully!`)
-            setTimeout(() => {
-              setNotificationMessage(null)
-              setMessageType('none')
-              }, 3000)
+            messageReset()
       })
     }
   }
